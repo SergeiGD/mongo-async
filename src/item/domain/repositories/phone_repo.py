@@ -1,6 +1,7 @@
 from abc import ABC, abstractclassmethod
 from dataclasses import dataclass
-import decimal
+from decimal import Decimal
+
 
 from src.item.domain.entities import Phone
 
@@ -8,11 +9,10 @@ from src.item.domain.entities import Phone
 @dataclass
 class CreatePhoneRequest:
     name: str
-    price: decimal
+    price: Decimal
     description: str
     camera: int
     # category_key: str
-
 
 class IPhoneRepository(ABC):
     @abstractclassmethod

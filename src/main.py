@@ -7,6 +7,7 @@ from pymongo.server_api import ServerApi
 
 from src.factory_funcs import phone_interactor_factory
 from src.item.domain.interactors.phone_interactor import PhoneInteractor
+from src.item.presentation.views import router as item_router
 
 app = FastAPI()
 
@@ -21,9 +22,9 @@ async def read_root():
     except Exception as e:
         return {"ping": str(e)}
     
-
-@app.get("/get-phones")
-async def get_phones(
-    phones_interactor: Annotated[PhoneInteractor, Depends(phone_interactor_factory)]
-):
-    return await phones_interactor.get_phones()
+    
+app.include_router(
+    item_router,
+    prefix="/items/v1",
+    tags=["Items"],
+)

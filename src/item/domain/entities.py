@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-import decimal
+from decimal import Decimal
 from typing import Protocol
 
 @dataclass
 class ItemProtocol(Protocol):
     name: str
-    price: decimal
+    price: Decimal
     description: str
     # category: Category
 
@@ -13,7 +13,7 @@ class ItemProtocol(Protocol):
 @dataclass
 class Phone:
     name: str
-    price: decimal
+    price: Decimal
     description: str
     camera: int
     # category: Category
@@ -22,7 +22,7 @@ class Phone:
 @dataclass
 class Laptop:
     name: str
-    price: decimal
+    price: Decimal
     description: str
     ram: int
     # category: Category

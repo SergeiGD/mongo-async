@@ -1,6 +1,6 @@
 from abc import ABC, abstractclassmethod
 
-from src.item.data.mappers import map_phone
+from src.item.data.mappers import map_phone, map_create_phone_request_to_mongo_dict
 from src.item.domain.entities import Phone
 from src.item.domain.repositories.phone_repo import CreatePhoneRequest, IPhoneRepository
 
@@ -16,6 +16,6 @@ class MongoPhoneRepository(IPhoneRepository):
         
     
     async def create_phone(self, phone: CreatePhoneRequest) -> Phone:
-        raw_phone = await self._client.items.insert_one(phone)
-        return map_phone(raw_phone)
+        result = await self._client.db.items.insert_one(map_create_phone_request_to_mongo_dict(phone))
+        return map_phone(await self._client.db.items.find_one({"_id": result.inserted_id}))
     
