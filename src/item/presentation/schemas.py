@@ -7,4 +7,9 @@ class CreatePhoneSchema(BaseModel):
     price: Decimal
     description: str
     camera: int
-    category_key: str
+
+class CreateLaptopSchema(BaseModel):
+    name: str
+    price: Decimal
+    description: str
+    ram: int

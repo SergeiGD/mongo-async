@@ -20,6 +20,7 @@ motor==3.4.0
 orjson==3.10.5
 pydantic==2.7.4
 pydantic_core==2.18.4
+pydantic_settings==2.2.1
 Pygments==2.18.0
 pymongo==4.7.3
 python-dotenv==1.0.1

@@ -3,26 +3,28 @@ from decimal import Decimal
 from typing import Protocol
 
 @dataclass
-class ItemProtocol(Protocol):
+class Item:
     name: str
     price: Decimal
     description: str
-    # category: Category
+    category_key: str
 
 
 @dataclass
-class Phone:
+class Phone(Item):
     name: str
     price: Decimal
     description: str
+    category_key: str
     camera: int
-    # category: Category
-
+    
 
 @dataclass
-class Laptop:
+class Laptop(Item):
     name: str
     price: Decimal
     description: str
+    category_key: str
     ram: int
-    # category: Category
+
+

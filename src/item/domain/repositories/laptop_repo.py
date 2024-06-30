@@ -3,23 +3,23 @@ from dataclasses import dataclass
 from decimal import Decimal
 
 
-from src.item.domain.entities import Phone
+from src.item.domain.entities import Laptop
 
 
 @dataclass
-class CreatePhoneRequest:
+class CreateLaptopRequest:
     name: str
     price: Decimal
     description: str
-    camera: int
+    ram: int
     category_key: str
 
-class IPhoneRepository(ABC):
+class ILaptopRepository(ABC):
     @abstractclassmethod
-    async def get_phones(self) -> list[Phone]:
+    async def get_laptops(self) -> list[Laptop]:
         raise NotImplementedError
     
     @abstractclassmethod
-    async def create_phone(self, phone: CreatePhoneRequest) -> Phone:
+    async def create_laptop(self, phone: CreateLaptopRequest) -> Laptop:
         raise NotImplementedError
     
