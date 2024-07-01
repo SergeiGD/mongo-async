@@ -2,9 +2,9 @@ from pydantic_settings import BaseSettings
 from pydantic import Field
 
 class Settings(BaseSettings):
-    MONGO_URI: str = Field(
-        "localhost:27017", env=["MONGO_URI"]
-    )
+    MONGO_URI: str = Field(env=["MONGO_URI"])
+    MONGO_USER: str = Field(env=["MONGO_USER"])
+    MONGO_PASSWORD: str = Field(env=["MONGO_PASSWORD"])
 
 
 class UseMockSettings(BaseSettings):

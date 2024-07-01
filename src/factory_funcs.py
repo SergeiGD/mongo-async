@@ -18,7 +18,7 @@ from src.settings import settings, use_mock_settings
 
 
 def get_async_client() -> AsyncIOMotorClient:
-    uri = settings.MONGO_URI
+    uri = f"mongodb://{settings.MONGO_USER}:{settings.MONGO_PASSWORD}@{settings.MONGO_URI}"
     return AsyncIOMotorClient(uri, server_api=ServerApi('1'))
     
 
