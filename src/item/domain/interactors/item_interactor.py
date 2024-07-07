@@ -1,5 +1,5 @@
 import decimal
-from src.item.domain.consts import LAPTOP_KEY, PHONE_KEY
+from src.item.domain.consts import CategoriesKeys
 from src.item.domain.entities import Phone, Laptop
 from src.item.domain.repositories.item_repo import IItemRepository
 from src.item.domain.repositories.phone_repo import CreatePhoneRequest, IPhoneRepository
@@ -28,7 +28,7 @@ class PhoneInteractor:
                 name=name,
                 price=price,
                 description=description,
-                category_key=PHONE_KEY,
+                category_key=CategoriesKeys.PHONE.value,
                 camera=camera,
             )
         )
@@ -55,7 +55,7 @@ class LaptopInteractor:
                 name=name,
                 price=price,
                 description=description,
-                category_key=LAPTOP_KEY,
+                category_key=CategoriesKeys.LAPTOP.value,
                 ram=ram,
             )
         )

@@ -11,10 +11,17 @@ router = APIRouter()
 
 
 @router.get("/items")
-async def get_phones(
+async def get_items(
     item_interactor: Annotated[ItemInteractor, Depends(item_interactor_factory)]
 ) -> list[Phone | Laptop]:
     return await item_interactor.get_items()
+
+
+@router.get("/phones")
+async def get_phones(
+    phone_interactor: Annotated[PhoneInteractor, Depends(phone_interactor_factory)]
+) -> list[Phone]:
+    return await phone_interactor.get_phones()
 
 
 @router.post("/phones")
@@ -28,6 +35,13 @@ async def add_phone(
         description=request.description,
         camera=request.camera,
     )
+
+@router.get("/laptops")
+async def get_laptops(
+    laptop_interactor: Annotated[LaptopInteractor, Depends(laptop_interactor_factory)]
+) -> list[Laptop]:
+    return await laptop_interactor.get_laptops()
+
 
 @router.post("/laptops")
 async def add_laptop(

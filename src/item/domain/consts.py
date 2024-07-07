@@ -1,2 +1,5 @@
-PHONE_KEY = "phone"
-LAPTOP_KEY = "laptop"
+from enum import Enum
+
+class CategoriesKeys(str, Enum):
+    PHONE = "phone"
+    LAPTOP = "laptop"

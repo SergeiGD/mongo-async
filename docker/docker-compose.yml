@@ -8,6 +8,7 @@ services:
       dockerfile: docker/Dockerfile
     volumes:
       - ../src/:/app/src
+      - ../docker/:/app/docker/
     ports:
       - "8000:8000"
     depends_on:
