@@ -1,11 +1,12 @@
 from bson import Decimal128
 from src.item.domain.entities import Phone, Laptop
-from src.item.domain.repositories.phone_repo import CreatePhoneRequest
-from src.item.domain.repositories.laptop_repo import CreateLaptopRequest
+from src.item.domain.repositories.phone_repo import PhoneRequestData
+from src.item.domain.repositories.laptop_repo import LaptopRequestData
 
 
 def map_phone(phone: dict) -> Phone:
     return Phone(
+        id=str(phone["_id"]),
         name=phone["name"],
         price=phone["price"].to_decimal(),
         description=phone["description"],
@@ -13,7 +14,7 @@ def map_phone(phone: dict) -> Phone:
         camera=phone["camera"],
     )
 
-def map_create_phone_request_to_mongo_dict(request: CreatePhoneRequest) -> dict:
+def map_phone_request_data_to_mongo_dict(request: PhoneRequestData) -> dict:
     return {
         "name": request.name,
         "price": Decimal128(request.price),
@@ -24,6 +25,7 @@ def map_create_phone_request_to_mongo_dict(request: CreatePhoneRequest) -> dict:
 
 def map_laptop(laptop: dict) -> Laptop:
     return Laptop(
+        id=str(laptop["_id"]),
         name=laptop["name"],
         price=laptop["price"].to_decimal(),
         description=laptop["description"],
@@ -31,7 +33,7 @@ def map_laptop(laptop: dict) -> Laptop:
         ram=laptop["ram"],
     )
 
-def map_create_laptop_request_to_mongo_dict(request: CreateLaptopRequest) -> dict:
+def map_create_laptop_request_to_mongo_dict(request: LaptopRequestData) -> dict:
     return {
         "name": request.name,
         "price": Decimal128(request.price),

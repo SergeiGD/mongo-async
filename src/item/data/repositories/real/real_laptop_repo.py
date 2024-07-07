@@ -1,7 +1,7 @@
 from src.item.data.mappers import map_laptop, map_create_laptop_request_to_mongo_dict
 from src.item.domain.consts import CategoriesKeys
 from src.item.domain.entities import Laptop
-from src.item.domain.repositories.laptop_repo import CreateLaptopRequest, ILaptopRepository
+from src.item.domain.repositories.laptop_repo import LaptopRequestData, ILaptopRepository
 
 from motor.motor_asyncio import AsyncIOMotorClient
 
@@ -16,7 +16,7 @@ class MongoLaptopRepository(ILaptopRepository):
         )]
         
     
-    async def create_laptop(self, laptop: CreateLaptopRequest) -> Laptop:
+    async def create_laptop(self, laptop: LaptopRequestData) -> Laptop:
         result = await self._client.db.items.insert_one(map_create_laptop_request_to_mongo_dict(laptop))
         return map_laptop(await self._client.db.items.find_one({"_id": result.inserted_id}))
     

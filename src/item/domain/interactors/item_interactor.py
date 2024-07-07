@@ -1,9 +1,10 @@
 import decimal
+from uuid import UUID
 from src.item.domain.consts import CategoriesKeys
 from src.item.domain.entities import Phone, Laptop
 from src.item.domain.repositories.item_repo import IItemRepository
-from src.item.domain.repositories.phone_repo import CreatePhoneRequest, IPhoneRepository
-from src.item.domain.repositories.laptop_repo import CreateLaptopRequest, ILaptopRepository
+from src.item.domain.repositories.phone_repo import PhoneRequestData, IPhoneRepository
+from src.item.domain.repositories.laptop_repo import LaptopRequestData, ILaptopRepository
 
 
 class PhoneInteractor:
@@ -24,7 +25,7 @@ class PhoneInteractor:
         camera: int,
     ) -> Phone:
         return await self._phone_repo.create_phone(
-            CreatePhoneRequest(
+            PhoneRequestData(
                 name=name,
                 price=price,
                 description=description,
@@ -32,6 +33,32 @@ class PhoneInteractor:
                 camera=camera,
             )
         )
+    
+    async def update_phone(
+        self, 
+        phone_id: str,
+        name: str,
+        price: decimal,
+        description: str,
+        camera: int,
+    ):
+        return await self._phone_repo.update_phone(
+            phone_id,
+            PhoneRequestData(
+                name=name,
+                price=price,
+                description=description,
+                category_key=CategoriesKeys.PHONE.value,
+                camera=camera,
+            )
+        )
+    
+    async def get_phone(
+        self, 
+        phone_id: str,
+    ):
+        return await self._phone_repo.get_phone(phone_id)
+    
     
 class LaptopInteractor:
     def __init__(
@@ -51,7 +78,7 @@ class LaptopInteractor:
         ram: int,
     ) -> Phone:
         return await self._latop_repo.create_laptop(
-            CreateLaptopRequest(
+            LaptopRequestData(
                 name=name,
                 price=price,
                 description=description,

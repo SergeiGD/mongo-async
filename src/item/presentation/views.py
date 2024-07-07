@@ -1,9 +1,10 @@
-from typing import Annotated
+from typing import Annotated, Optional
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path, HTTPException
 
 from src.item.domain.entities import Item, Phone, Laptop
 from src.item.domain.interactors.item_interactor import ItemInteractor, LaptopInteractor, PhoneInteractor
+from src.item.domain.repositories.exceptions import NotFoundException
 from src.item.presentation.schemas import CreateLaptopSchema, CreatePhoneSchema
 from src.factory_funcs import item_interactor_factory, laptop_interactor_factory, phone_interactor_factory
 
@@ -35,6 +36,32 @@ async def add_phone(
         description=request.description,
         camera=request.camera,
     )
+
+
+@router.put("/phones/{phone_id}")
+async def update_phone(
+    phone_interactor: Annotated[PhoneInteractor, Depends(phone_interactor_factory)],
+    phone_id: Annotated[str, Path(min_length=24, max_length=24)],
+    request: CreatePhoneSchema,
+) -> Optional[Phone]:
+    return await phone_interactor.update_phone(
+        phone_id=phone_id,
+        name=request.name,
+        price=request.price,
+        description=request.description,
+        camera=request.camera,
+    )
+
+
+@router.get("/phones/{phone_id}")
+async def get_phone(
+    phone_interactor: Annotated[PhoneInteractor, Depends(phone_interactor_factory)],
+    phone_id: Annotated[str, Path(min_length=24, max_length=24)],
+) -> Optional[Phone]:
+    result = await phone_interactor.get_phone(phone_id=phone_id)
+    if result is None:
+        raise NotFoundException
+
 
 @router.get("/laptops")
 async def get_laptops(

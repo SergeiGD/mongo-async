@@ -7,7 +7,7 @@ from src.item.domain.entities import Laptop
 
 
 @dataclass
-class CreateLaptopRequest:
+class LaptopRequestData:
     name: str
     price: Decimal
     description: str
@@ -20,6 +20,6 @@ class ILaptopRepository(ABC):
         raise NotImplementedError
     
     @abstractclassmethod
-    async def create_laptop(self, phone: CreateLaptopRequest) -> Laptop:
+    async def create_laptop(self, phone: LaptopRequestData) -> Laptop:
         raise NotImplementedError
     
