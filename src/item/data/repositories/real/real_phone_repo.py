@@ -27,14 +27,6 @@ class MongoPhoneRepository(IPhoneRepository):
         return map_phone(await self._client.db.items.find_one({"_id": result.inserted_id}))
     
     async def update_phone(self, phone_id: str, data: PhoneRequestData) -> Phone:
-        result = await self._client.db.items.find_one_and_update(
-                {
-                    "category_key": CategoriesKeys.PHONE.value,
-                    "_id": ObjectId(phone_id),
-                },
-                {"$set": map_phone_request_data_to_mongo_dict(data)},
-                return_document=ReturnDocument.AFTER,
-            )
         try:
             result = await self._client.db.items.find_one_and_update(
                 {
