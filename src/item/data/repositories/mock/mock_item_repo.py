@@ -1,5 +1,3 @@
-from abc import ABC, abstractclassmethod
-
 from src.item.domain.entities import Item, Phone, Laptop
 from src.item.domain.repositories.item_repo import IItemRepository
 from src.item.data.repositories.mock.consts import MOCK_PHONE_DATA, MOCK_LAPTOP_DATA

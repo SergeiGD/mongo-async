@@ -11,6 +11,7 @@ class UseMockSettings(BaseSettings):
     USE_MOCK_ITEM_REPO: bool = Field(env=["USE_MOCK_ITEM_REPO"])
     USE_MOCK_PHONE_REPO: bool = Field(env=["USE_MOCK_PHONE_REPO"])
     USE_MOCK_LAPTOP_REPO: bool = Field(env=["USE_MOCK_LAPTOP_REPO"])
+    USE_MOCK_CATEGORY_REPO: bool = Field(env=["USE_MOCK_CATEGORY_REPO"])
 
 
 settings = Settings()

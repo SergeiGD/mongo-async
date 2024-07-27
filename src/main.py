@@ -2,8 +2,10 @@ from fastapi import FastAPI, Request
 
 from fastapi.responses import JSONResponse
 
-from src.item.domain.repositories.exceptions import SchemaException, UnknownCategoryException, NotFoundException
+from src.item.domain.repositories.exceptions import UnknownCategoryException
+from src.common_exceptions import NotFoundException, SchemaException
 from src.item.presentation.views import router as item_router
+from src.category.presentation.views import router as category_router
 
 app = FastAPI()
     
@@ -12,6 +14,11 @@ app.include_router(
     item_router,
     prefix="/items/v1",
     tags=["Items"],
+)
+app.include_router(
+    category_router,
+    prefix="/categories/v1",
+    tags=["Categories"],
 )
 
 @app.exception_handler(UnknownCategoryException)

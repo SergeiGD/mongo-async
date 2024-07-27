@@ -1,6 +1,6 @@
 import decimal
 from uuid import UUID
-from src.item.domain.consts import CategoriesKeys
+from src.category.domain.consts import CategoriesKeys
 from src.item.domain.entities import Phone, Laptop
 from src.item.domain.repositories.item_repo import IItemRepository
 from src.item.domain.repositories.phone_repo import PhoneRequestData, IPhoneRepository

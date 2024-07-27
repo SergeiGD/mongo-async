@@ -2,9 +2,9 @@ from typing import Annotated, Optional
 
 from fastapi import APIRouter, Depends, Path, HTTPException
 
-from src.item.domain.entities import Item, Phone, Laptop
+from src.common_exceptions import NotFoundException
+from src.item.domain.entities import Phone, Laptop
 from src.item.domain.interactors.item_interactor import ItemInteractor, LaptopInteractor, PhoneInteractor
-from src.item.domain.repositories.exceptions import NotFoundException
 from src.item.presentation.schemas import CreateLaptopSchema, CreatePhoneSchema
 from src.factory_funcs import item_interactor_factory, laptop_interactor_factory, phone_interactor_factory
 

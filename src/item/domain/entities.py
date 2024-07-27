@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Protocol
-from uuid import UUID
+
+from src.category.domain.entities import Category
 
 @dataclass
 class Item:
@@ -9,7 +9,7 @@ class Item:
     name: str
     price: Decimal
     description: str
-    category_key: str
+    category: Category
 
 
 @dataclass
@@ -18,7 +18,7 @@ class Phone(Item):
     name: str
     price: Decimal
     description: str
-    category_key: str
+    category: Category
     camera: int
     
 
@@ -28,5 +28,5 @@ class Laptop(Item):
     name: str
     price: Decimal
     description: str
-    category_key: str
+    category: Category
     ram: int

@@ -1,6 +1,4 @@
-from abc import ABC, abstractclassmethod
 from typing import Optional
-from uuid import UUID
 
 from src.item.data.repositories.mock.consts import MOCK_PHONE_DATA
 from src.item.domain.entities import Phone

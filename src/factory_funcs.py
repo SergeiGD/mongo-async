@@ -3,6 +3,10 @@ from fastapi import Depends
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.server_api import ServerApi
 
+from src.category.data.repositories.mock.mock_category_repo import MockCategoryRepository
+from src.category.data.repositories.real.real_category_repo import MongoCategoryRepository
+from src.category.domain.interactors.category_interactor import CategoryInteractor
+from src.category.domain.repositories.category_repo import ICategoryRepository
 from src.item.data.repositories.mock.mock_phone_repo import MockPhoneRepository
 from src.item.data.repositories.mock.mock_laptop_repo import MockLaptopRepository
 from src.item.data.repositories.mock.mock_item_repo import MockItemRepository
@@ -60,7 +64,17 @@ def laptop_interactor_factory(
 
 def item_interactor_factory(
     item_repo: Annotated[IItemRepository, Depends(item_repository_factory)],
-    phone_repo: Annotated[IPhoneRepository, Depends(phone_repository_factory)],
-    laptop_repo: Annotated[ILaptopRepository, Depends(laptop_repository_factory)],
 ) -> ItemInteractor:
     return ItemInteractor(item_repo)
+
+def category_repository_factory(
+    client: Annotated[AsyncIOMotorClient, Depends(get_async_client)]
+) -> IItemRepository:
+    if use_mock_settings.USE_MOCK_CATEGORY_REPO:
+        return MockCategoryRepository()
+    return MongoCategoryRepository(client)
+
+def category_interactor_factory(
+    category_repo: Annotated[ICategoryRepository, Depends(category_repository_factory)],
+):
+    return CategoryInteractor(category_repo)
