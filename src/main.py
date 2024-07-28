@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 
 from fastapi.responses import JSONResponse
 
-from src.item.domain.repositories.exceptions import UnknownCategoryException
+from src.category.domain.exceptions import UnknownCategoryException
 from src.common_exceptions import NotFoundException, SchemaException
 from src.item.presentation.views import router as item_router
 from src.category.presentation.views import router as category_router

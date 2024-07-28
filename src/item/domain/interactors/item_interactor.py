@@ -1,18 +1,23 @@
 import decimal
 from uuid import UUID
 from src.category.domain.consts import CategoriesKeys
+from src.category.domain.entities import Category
+from src.category.domain.exceptions import UnknownCategoryException
+from src.category.domain.repositories.category_repo import ICategoryRepository
 from src.item.domain.entities import Phone, Laptop
 from src.item.domain.repositories.item_repo import IItemRepository
-from src.item.domain.repositories.phone_repo import PhoneRequestData, IPhoneRepository
-from src.item.domain.repositories.laptop_repo import LaptopRequestData, ILaptopRepository
+from src.item.domain.repositories.phone_repo import PhoneCreateRequestData, IPhoneRepository, PhoneUpdateRequestData
+from src.item.domain.repositories.laptop_repo import LaptopCreateRequestData, ILaptopRepository
 
 
 class PhoneInteractor:
     def __init__(
         self,
         phone_repo: IPhoneRepository,
+        category_repo: ICategoryRepository,
     ) -> None:
         self._phone_repo = phone_repo
+        self._category_repo = category_repo
 
     async def get_phones(self) -> list[Phone]:
         return await self._phone_repo.get_phones()
@@ -24,12 +29,15 @@ class PhoneInteractor:
         description: str,
         camera: int,
     ) -> Phone:
+        category = await self._category_repo.get_category_by_key(CategoriesKeys.PHONE.value)
+        if category is None:
+            raise UnknownCategoryException
         return await self._phone_repo.create_phone(
-            PhoneRequestData(
+            PhoneCreateRequestData(
                 name=name,
                 price=price,
                 description=description,
-                category_key=CategoriesKeys.PHONE.value,
+                category=category,
                 camera=camera,
             )
         )
@@ -44,11 +52,10 @@ class PhoneInteractor:
     ):
         return await self._phone_repo.update_phone(
             phone_id,
-            PhoneRequestData(
+            PhoneUpdateRequestData(
                 name=name,
                 price=price,
                 description=description,
-                category_key=CategoriesKeys.PHONE.value,
                 camera=camera,
             )
         )
@@ -63,12 +70,14 @@ class PhoneInteractor:
 class LaptopInteractor:
     def __init__(
         self,
-        latop_repo: ILaptopRepository,
+        laptop_repo: ILaptopRepository,
+        category_repo: ICategoryRepository,
     ) -> None:
-        self._latop_repo = latop_repo
+        self._laptop_repo = laptop_repo
+        self._category_repo = category_repo
 
     async def get_laptops(self) -> list[Laptop]:
-        return await self._latop_repo.get_laptops()
+        return await self._laptop_repo.get_laptops()
     
     async def create_laptop(
         self,
@@ -77,12 +86,16 @@ class LaptopInteractor:
         description: str,
         ram: int,
     ) -> Phone:
-        return await self._latop_repo.create_laptop(
-            LaptopRequestData(
+        category = await self._category_repo.get_category_by_key(CategoriesKeys.LAPTOP.value)
+        if category is None:
+            raise UnknownCategoryException
+        
+        return await self._laptop_repo.create_laptop(
+            LaptopCreateRequestData(
                 name=name,
                 price=price,
                 description=description,
-                category_key=CategoriesKeys.LAPTOP.value,
+                category=category,
                 ram=ram,
             )
         )

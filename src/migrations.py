@@ -19,7 +19,6 @@ async def main():
     
     await client.db.categories.create_index([
         ("key", ASCENDING), 
-        ("name", ASCENDING), 
     ], unique=True)
 
     # setup fixtures

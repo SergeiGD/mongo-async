@@ -1,7 +1,7 @@
 from src.category.domain.consts import CategoriesKeys
 from src.item.data.mappers import map_phone, map_laptop
 from src.item.domain.entities import Item
-from src.item.domain.repositories.exceptions import UnknownCategoryException
+from src.category.domain.exceptions import UnknownCategoryException
 from src.item.domain.repositories.item_repo import IItemRepository
 
 from motor.motor_asyncio import AsyncIOMotorClient

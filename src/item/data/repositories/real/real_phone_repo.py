@@ -2,11 +2,10 @@ from typing import Optional
 
 from pymongo import ReturnDocument
 from src.category.domain.consts import CategoriesKeys
-from src.item.data.mappers import map_phone, map_phone_request_data_to_mongo_dict
+from src.item.data.mappers import map_phone, map_phone_create_request_data_to_mongo_dict, map_phone_update_request_data_to_mongo_dict
 from src.item.domain.entities import Phone
 from src.common_exceptions import NotFoundException, SaveException, SchemaException
-from src.item.domain.repositories.exceptions import UnknownCategoryException
-from src.item.domain.repositories.phone_repo import PhoneRequestData, IPhoneRepository
+from src.item.domain.repositories.phone_repo import IPhoneRepository, PhoneCreateRequestData, PhoneUpdateRequestData
 
 from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId
@@ -23,35 +22,26 @@ class MongoPhoneRepository(IPhoneRepository):
         )]
         
     
-    async def create_phone(self, phone: PhoneRequestData) -> Phone:
-        category = await self._client.db.categories.find_one(
-            {
-                "key": CategoriesKeys.PHONE.value,
-            },
-            projection={"_id": False},
-        )
-        if category is None:
-            raise UnknownCategoryException
-        insert_data = map_phone_request_data_to_mongo_dict(phone) | {"category": category}
+    async def create_phone(self, phone: PhoneCreateRequestData) -> Phone:
+        insert_data = map_phone_create_request_data_to_mongo_dict(phone)
         result = await self._client.db.items.insert_one(insert_data)
         return map_phone(await self._client.db.items.find_one({"_id": result.inserted_id}))
     
 
-    async def update_phone(self, phone_id: str, data: PhoneRequestData) -> Phone:
+    async def update_phone(self, phone_id: str, data: PhoneUpdateRequestData) -> Phone:
         try:
             result = await self._client.db.items.find_one_and_update(
                 {
                     "category.key": CategoriesKeys.PHONE.value,
                     "_id": ObjectId(phone_id),
                 },
-                {"$set": map_phone_request_data_to_mongo_dict(data)},
+                {"$set": map_phone_update_request_data_to_mongo_dict(data)},
                 return_document=ReturnDocument.AFTER,
             )
         except BSONError:
             raise SchemaException
         if result is None:
             raise NotFoundException
-        
         
         return map_phone(result)
     

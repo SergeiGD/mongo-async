@@ -61,6 +61,7 @@ async def get_phone(
     result = await phone_interactor.get_phone(phone_id=phone_id)
     if result is None:
         raise NotFoundException
+    return result
 
 
 @router.get("/laptops")

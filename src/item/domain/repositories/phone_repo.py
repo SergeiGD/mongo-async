@@ -5,16 +5,24 @@ from typing import Optional
 from uuid import UUID
 
 
+from src.category.domain.entities import Category
 from src.item.domain.entities import Phone
 
 
 @dataclass
-class PhoneRequestData:
+class PhoneCreateRequestData:
     name: str
     price: Decimal
     description: str
     camera: int
-    category_key: str
+    category: Category
+
+@dataclass
+class PhoneUpdateRequestData:
+    name: str
+    price: Decimal
+    description: str
+    camera: int
 
 class IPhoneRepository(ABC):
     @abstractclassmethod
@@ -22,11 +30,11 @@ class IPhoneRepository(ABC):
         raise NotImplementedError
     
     @abstractclassmethod
-    async def create_phone(self, phone: PhoneRequestData) -> Phone:
+    async def create_phone(self, phone: PhoneCreateRequestData) -> Phone:
         raise NotImplementedError
     
     @abstractclassmethod
-    async def update_phone(self, phone_id: str, data: PhoneRequestData) -> Phone:
+    async def update_phone(self, phone_id: str, data: PhoneUpdateRequestData) -> Phone:
         raise NotImplementedError
     
     @abstractclassmethod

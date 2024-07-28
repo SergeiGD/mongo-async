@@ -26,6 +26,19 @@ def get_async_client() -> AsyncIOMotorClient:
     return AsyncIOMotorClient(uri, server_api=ServerApi('1'))
     
 
+def category_repository_factory(
+    client: Annotated[AsyncIOMotorClient, Depends(get_async_client)]
+) -> IItemRepository:
+    if use_mock_settings.USE_MOCK_CATEGORY_REPO:
+        return MockCategoryRepository()
+    return MongoCategoryRepository(client)
+
+def category_interactor_factory(
+    category_repo: Annotated[ICategoryRepository, Depends(category_repository_factory)],
+):
+    return CategoryInteractor(category_repo)
+
+
 def phone_repository_factory(
     client: Annotated[AsyncIOMotorClient, Depends(get_async_client)]
 ) -> IPhoneRepository:
@@ -51,30 +64,20 @@ def item_repository_factory(
 
 
 def phone_interactor_factory(
-    phone_repo: Annotated[IPhoneRepository, Depends(phone_repository_factory)]
+    phone_repo: Annotated[IPhoneRepository, Depends(phone_repository_factory)],
+    category_repo: Annotated[ICategoryRepository, Depends(category_repository_factory)],
 ) -> PhoneInteractor:
-    return PhoneInteractor(phone_repo)
+    return PhoneInteractor(phone_repo=phone_repo, category_repo=category_repo)
 
 
 def laptop_interactor_factory(
-    laptop_repo: Annotated[ILaptopRepository, Depends(laptop_repository_factory)]
+    laptop_repo: Annotated[ILaptopRepository, Depends(laptop_repository_factory)],
+    category_repo: Annotated[ICategoryRepository, Depends(category_repository_factory)],
 ) -> LaptopInteractor:
-    return LaptopInteractor(laptop_repo)
+    return LaptopInteractor(laptop_repo=laptop_repo, category_repo=category_repo)
 
 
 def item_interactor_factory(
     item_repo: Annotated[IItemRepository, Depends(item_repository_factory)],
 ) -> ItemInteractor:
     return ItemInteractor(item_repo)
-
-def category_repository_factory(
-    client: Annotated[AsyncIOMotorClient, Depends(get_async_client)]
-) -> IItemRepository:
-    if use_mock_settings.USE_MOCK_CATEGORY_REPO:
-        return MockCategoryRepository()
-    return MongoCategoryRepository(client)
-
-def category_interactor_factory(
-    category_repo: Annotated[ICategoryRepository, Depends(category_repository_factory)],
-):
-    return CategoryInteractor(category_repo)

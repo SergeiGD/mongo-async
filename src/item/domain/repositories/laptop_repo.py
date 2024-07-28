@@ -3,16 +3,17 @@ from dataclasses import dataclass
 from decimal import Decimal
 
 
+from src.category.domain.entities import Category
 from src.item.domain.entities import Laptop
 
 
 @dataclass
-class LaptopRequestData:
+class LaptopCreateRequestData:
     name: str
     price: Decimal
     description: str
     ram: int
-    category_key: str
+    category: Category
 
 class ILaptopRepository(ABC):
     @abstractclassmethod
@@ -20,6 +21,6 @@ class ILaptopRepository(ABC):
         raise NotImplementedError
     
     @abstractclassmethod
-    async def create_laptop(self, phone: LaptopRequestData) -> Laptop:
+    async def create_laptop(self, phone: LaptopCreateRequestData) -> Laptop:
         raise NotImplementedError
     
